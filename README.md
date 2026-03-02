@@ -26,7 +26,23 @@ javac OOPSBannerApp.java
 java OOPSBannerApp
 ```
 
-The output should be exactly `OOPS` without quotes.
+Initially the program prints the literal text `OOPS` (UC1). For UC2 the
+same class has been extended so that the output becomes a multi-line
+banner:
+
+```
+*********   *********   *********   *********
+*       *   *       *   *       *   *        
+*       *   *       *   *       *   *
+*       *   *       *   *********   *********
+*       *   *       *   *                   *
+*       *   *       *   *                   *
+*********   *********   *           *********
+```
+
+The banner is created with a series of `System.out.println()` calls and
+string concatenation; each character pattern spans 7 lines and is 9
+characters wide.
 
 ### Git Workflow
 
