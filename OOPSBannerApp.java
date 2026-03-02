@@ -21,6 +21,53 @@ public class OOPSBannerApp {
      * @param args command-line arguments (ignored)
      */
     public static void main(String[] args) {
-        System.out.println("OOPS");
+        // UC2: Render OOPS as a banner using individual println calls.
+        // Define each letter as a 7-element pattern array; width is 9.
+        String[] letterO = {
+            "*********",
+            "*       *",
+            "*       *",
+            "*       *",
+            "*       *",
+            "*       *",
+            "*********"
+        };
+
+        String[] letterP = {
+            "*********",
+            "*       *",
+            "*       *",
+            "*********",
+            "*        ",
+            "*        ",
+            "*        "
+        };
+
+        String[] letterS = {
+            "*********",
+            "*        ",
+            "*        ",
+            "*********",
+            "        *",
+            "        *",
+            "*********"
+        };
+
+        // UC4: store all banner lines in a String array and print via loop
+        String[] lines = new String[7];
+        for (int i = 0; i < 7; i++) {
+            // build each line using String.join (UC3 technique)
+            lines[i] = String.join("   ",
+                letterO[i],
+                letterO[i],
+                letterP[i],
+                letterS[i]
+            );
+        }
+
+        // print the banner lines with an enhanced for-loop
+        for (String line : lines) {
+            System.out.println(line);
+        }
     }
 }
