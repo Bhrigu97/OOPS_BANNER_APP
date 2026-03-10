@@ -21,7 +21,6 @@ public class OOPSBannerApp {
      * @param args command-line arguments (ignored)
      */
     public static void main(String[] args) {
-        // UC2: Render OOPS as a banner using individual println calls.
         // Define each letter as a 7-element pattern array; width is 9.
         String[] letterO = {
             "*********",
@@ -53,19 +52,23 @@ public class OOPSBannerApp {
             "*********"
         };
 
-        // UC4: store all banner lines in a String array and print via loop
-        String[] lines = new String[7];
-        for (int i = 0; i < 7; i++) {
-            // build each line using String.join (UC3 technique)
-            lines[i] = String.join("   ",
-                letterO[i],
-                letterO[i],
-                letterP[i],
-                letterS[i]
-            );
-        }
+        // UC5: Render OOPS as Banner using Inline Array Initialization
+        // Declare and initialize a String array in a single statement using
+        // array literal syntax with String.join() method calls to construct
+        // each banner line. This approach combines declaration, initialization,
+        // and population in one concise statement, eliminating the need for
+        // separate population statements.
+        String[] lines = {
+            String.join("   ", letterO[0], letterO[0], letterP[0], letterS[0]),
+            String.join("   ", letterO[1], letterO[1], letterP[1], letterS[1]),
+            String.join("   ", letterO[2], letterO[2], letterP[2], letterS[2]),
+            String.join("   ", letterO[3], letterO[3], letterP[3], letterS[3]),
+            String.join("   ", letterO[4], letterO[4], letterP[4], letterS[4]),
+            String.join("   ", letterO[5], letterO[5], letterP[5], letterS[5]),
+            String.join("   ", letterO[6], letterO[6], letterP[6], letterS[6])
+        };
 
-        // print the banner lines with an enhanced for-loop
+        // Print the banner using an enhanced for-loop
         for (String line : lines) {
             System.out.println(line);
         }
