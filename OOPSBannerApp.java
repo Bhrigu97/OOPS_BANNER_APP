@@ -9,7 +9,8 @@
  *   <li>Main method as the entry point</li>
  *   <li>Static method invocation</li>
  *   <li>String literals and console output</li>
- *   <li>Static helper methods for modular design</li>
+ *   <li>Inner static classes for pattern encapsulation</li>
+ *   <li>OOPS principles: encapsulation, reusability, abstraction</li>
  * </ul>
  *
  * @author  your-name
@@ -18,13 +19,58 @@
 public class OOPSBannerApp {
 
     /**
-     * Returns the pattern (array of 7 lines) for the letter 'O'.
-     * Each line is 9 characters wide.
+     * Inner static class to encapsulate a character and its banner pattern.
+     * This class represents a character (O, P, S, etc.) and its corresponding
+     * 7-line banner representation (9 characters wide per line).
      *
-     * @return String array containing the O pattern
+     * <p>Key OOPS Principles:
+     * <ul>
+     *   <li>ENCAPSULATION – Encapsulates a character and its pattern</li>
+     *   <li>REUSABILITY – Can be extended for more characters without modifying display logic</li>
+     *   <li>ABSTRACTION – Provides clean interface for pattern access</li>
+     * </ul>
      */
-    public static String[] getOPattern() {
-        return new String[] {
+    public static class CharacterPatternMap {
+        private char character;
+        private String[] pattern;
+
+        /**
+         * Constructor to initialize the character and its banner pattern.
+         *
+         * @param character the character (e.g., 'O', 'P', 'S')
+         * @param pattern   the 7-line pattern array (9 characters per line)
+         */
+        public CharacterPatternMap(char character, String[] pattern) {
+            this.character = character;
+            this.pattern = pattern;
+        }
+
+        /**
+         * Getter method to access the character.
+         *
+         * @return the character stored in this instance
+         */
+        public char getCharacter() {
+            return character;
+        }
+
+        /**
+         * Getter method to access the pattern array.
+         *
+         * @return the 7-line pattern array
+         */
+        public String[] getPattern() {
+            return pattern;
+        }
+    }
+
+    /**
+     * Returns a CharacterPatternMap instance for the letter 'O'.
+     *
+     * @return CharacterPatternMap with 'O' character and its 7-line pattern
+     */
+    public static CharacterPatternMap getOPatternMap() {
+        return new CharacterPatternMap('O', new String[] {
             "*********",
             "*       *",
             "*       *",
@@ -32,17 +78,16 @@ public class OOPSBannerApp {
             "*       *",
             "*       *",
             "*********"
-        };
+        });
     }
 
     /**
-     * Returns the pattern (array of 7 lines) for the letter 'P'.
-     * Each line is 9 characters wide.
+     * Returns a CharacterPatternMap instance for the letter 'P'.
      *
-     * @return String array containing the P pattern
+     * @return CharacterPatternMap with 'P' character and its 7-line pattern
      */
-    public static String[] getPPattern() {
-        return new String[] {
+    public static CharacterPatternMap getPPatternMap() {
+        return new CharacterPatternMap('P', new String[] {
             "*********",
             "*       *",
             "*       *",
@@ -50,17 +95,16 @@ public class OOPSBannerApp {
             "*        ",
             "*        ",
             "*        "
-        };
+        });
     }
 
     /**
-     * Returns the pattern (array of 7 lines) for the letter 'S'.
-     * Each line is 9 characters wide.
+     * Returns a CharacterPatternMap instance for the letter 'S'.
      *
-     * @return String array containing the S pattern
+     * @return CharacterPatternMap with 'S' character and its 7-line pattern
      */
-    public static String[] getSPattern() {
-        return new String[] {
+    public static CharacterPatternMap getSPatternMap() {
+        return new CharacterPatternMap('S', new String[] {
             "*********",
             "*        ",
             "*        ",
@@ -68,47 +112,66 @@ public class OOPSBannerApp {
             "        *",
             "        *",
             "*********"
-        };
+        });
     }
 
     /**
-     * Constructs a single banner line for a given line index.
-     * Combines O, O, P, S patterns at the specified line using String.join().
+     * Constructs a single banner line combining patterns from multiple
+     * CharacterPatternMap instances at a specified line index.
+     * Uses StringBuilder for efficient string concatenation.
      *
-     * @param lineIndex the line number (0-6) to construct
-     * @return the constructed banner line with all four letters
+     * @param lineIndex    the line number (0-6) to construct
+     * @param patternMaps  array of CharacterPatternMap objects to combine
+     * @return the constructed banner line with all characters
      */
-    public static String getBannerLine(int lineIndex) {
-        String[] oPattern = getOPattern();
-        String[] pPattern = getPPattern();
-        String[] sPattern = getSPattern();
-
-        return String.join("   ",
-            oPattern[lineIndex],
-            oPattern[lineIndex],
-            pPattern[lineIndex],
-            sPattern[lineIndex]
-        );
+    public static String getBannerLine(int lineIndex, CharacterPatternMap[] patternMaps) {
+        StringBuilder line = new StringBuilder();
+        
+        for (int i = 0; i < patternMaps.length; i++) {
+            if (i > 0) {
+                line.append("   ");  // Append 3 spaces separator between characters
+            }
+            line.append(patternMaps[i].getPattern()[lineIndex]);
+        }
+        
+        return line.toString();
     }
     /**
      * Entry point of the application. Prints "OOPS" to standard output.
      *
+     * UC7: Store Character Pattern in a Class
+     * Creates CharacterPatternMap instances for O, P, and S, then uses them
+     * to generate and display the banner. This approach provides better
+     * organization, reusability, and scalability for managing character patterns.
+     *
+     * Key Benefits:
+     * - ENCAPSULATION: Character patterns are encapsulated within CharacterPatternMap
+     * - MODULARITY: Separation of concerns between data and display logic
+     * - REUSABILITY: PatternMap instances can be used for different words
+     * - ABSTRACTION: Clean interface for pattern access
+     * - EXTENSIBILITY: Easy to add new characters without modifying display code
+     *
      * @param args command-line arguments (ignored)
      */
     public static void main(String[] args) {
-        // UC6: Render OOPS as Banner by Refactoring Logic into Helper Methods
-        // Declare and initialize a String array using inline initialization
-        // with calls to helper methods that encapsulate character patterns.
-        // This approach improves modularity, reusability, and maintainability
-        // by separating pattern generation into dedicated static methods.
+        // Create CharacterPatternMap instances for O, O, P, S
+        CharacterPatternMap[] patternMaps = {
+            getOPatternMap(),
+            getOPatternMap(),
+            getPPatternMap(),
+            getSPatternMap()
+        };
+
+        // Declare and initialize a String array using method calls
+        // that leverage CharacterPatternMap objects
         String[] lines = {
-            getBannerLine(0),
-            getBannerLine(1),
-            getBannerLine(2),
-            getBannerLine(3),
-            getBannerLine(4),
-            getBannerLine(5),
-            getBannerLine(6)
+            getBannerLine(0, patternMaps),
+            getBannerLine(1, patternMaps),
+            getBannerLine(2, patternMaps),
+            getBannerLine(3, patternMaps),
+            getBannerLine(4, patternMaps),
+            getBannerLine(5, patternMaps),
+            getBannerLine(6, patternMaps)
         };
 
         // Print the banner using an enhanced for-loop
