@@ -9,68 +9,35 @@
  *   <li>Main method as the entry point</li>
  *   <li>Static method invocation</li>
  *   <li>String literals and console output</li>
- *   <li>Inner static classes for pattern encapsulation</li>
- *   <li>OOPS principles: encapsulation, reusability, abstraction</li>
+ *   <li>HashMap for efficient character pattern storage and retrieval</li>
+ *   <li>Collections Framework for modular pattern management</li>
  * </ul>
  *
  * @author  your-name
  * @version 1.0
  */
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class OOPSBannerApp {
 
     /**
-     * Inner static class to encapsulate a character and its banner pattern.
-     * This class represents a character (O, P, S, etc.) and its corresponding
-     * 7-line banner representation (9 characters wide per line).
+     * Builds and returns a HashMap containing character patterns for banner display.
+     * Maps each character (O, P, S) to its corresponding 7-line ASCII art pattern.
      *
-     * <p>Key OOPS Principles:
-     * <ul>
-     *   <li>ENCAPSULATION – Encapsulates a character and its pattern</li>
-     *   <li>REUSABILITY – Can be extended for more characters without modifying display logic</li>
-     *   <li>ABSTRACTION – Provides clean interface for pattern access</li>
-     * </ul>
-     */
-    public static class CharacterPatternMap {
-        private char character;
-        private String[] pattern;
-
-        /**
-         * Constructor to initialize the character and its banner pattern.
-         *
-         * @param character the character (e.g., 'O', 'P', 'S')
-         * @param pattern   the 7-line pattern array (9 characters per line)
-         */
-        public CharacterPatternMap(char character, String[] pattern) {
-            this.character = character;
-            this.pattern = pattern;
-        }
-
-        /**
-         * Getter method to access the character.
-         *
-         * @return the character stored in this instance
-         */
-        public char getCharacter() {
-            return character;
-        }
-
-        /**
-         * Getter method to access the pattern array.
-         *
-         * @return the 7-line pattern array
-         */
-        public String[] getPattern() {
-            return pattern;
-        }
-    }
-
-    /**
-     * Returns a CharacterPatternMap instance for the letter 'O'.
+     * Key Benefits:
+     * - ENCAPSULATION: Character patterns abstracted within HashMap
+     * - MODULARITY: Clear separation between pattern creation and display
+     * - SCALABILITY: Easy to add new characters without modifying display code
      *
-     * @return CharacterPatternMap with 'O' character and its 7-line pattern
+     * @return HashMap with Character keys and String[] pattern values
      */
-    public static CharacterPatternMap getOPatternMap() {
-        return new CharacterPatternMap('O', new String[] {
+    public static Map<Character, String[]> buildCharacterPatternMap() {
+        Map<Character, String[]> patternMap = new HashMap<>();
+
+        // Pattern for 'O' (9 characters wide, 7 lines)
+        patternMap.put('O', new String[] {
             "*********",
             "*       *",
             "*       *",
@@ -79,15 +46,9 @@ public class OOPSBannerApp {
             "*       *",
             "*********"
         });
-    }
 
-    /**
-     * Returns a CharacterPatternMap instance for the letter 'P'.
-     *
-     * @return CharacterPatternMap with 'P' character and its 7-line pattern
-     */
-    public static CharacterPatternMap getPPatternMap() {
-        return new CharacterPatternMap('P', new String[] {
+        // Pattern for 'P' (9 characters wide, 7 lines)
+        patternMap.put('P', new String[] {
             "*********",
             "*       *",
             "*       *",
@@ -96,15 +57,9 @@ public class OOPSBannerApp {
             "*        ",
             "*        "
         });
-    }
 
-    /**
-     * Returns a CharacterPatternMap instance for the letter 'S'.
-     *
-     * @return CharacterPatternMap with 'S' character and its 7-line pattern
-     */
-    public static CharacterPatternMap getSPatternMap() {
-        return new CharacterPatternMap('S', new String[] {
+        // Pattern for 'S' (9 characters wide, 7 lines)
+        patternMap.put('S', new String[] {
             "*********",
             "*        ",
             "*        ",
@@ -113,65 +68,85 @@ public class OOPSBannerApp {
             "        *",
             "*********"
         });
+
+        return patternMap;
     }
 
     /**
-     * Constructs a single banner line combining patterns from multiple
-     * CharacterPatternMap instances at a specified line index.
-     * Uses StringBuilder for efficient string concatenation.
+     * Constructs a single banner line for a given line index using the pattern map.
+     * Combines patterns for each character in the word using StringBuilder.
+     *
+     * Key Concepts:
+     * - NESTED LOOPS: Iterates through word characters (outer), each at line index
+     * - STRINGBUILDER: Efficiently concatenates pattern segments for each line
+     * - MAP LOOKUP: Retrieves patterns via HashMap for O(1) average time complexity
      *
      * @param lineIndex    the line number (0-6) to construct
-     * @param patternMaps  array of CharacterPatternMap objects to combine
-     * @return the constructed banner line with all characters
+     * @param word         the word to display (e.g., "OOPS")
+     * @param patternMap   HashMap containing all character patterns
+     * @return the constructed banner line for the specified line index
      */
-    public static String getBannerLine(int lineIndex, CharacterPatternMap[] patternMaps) {
+    public static String getBannerLine(int lineIndex, String word, Map<Character, String[]> patternMap) {
         StringBuilder line = new StringBuilder();
-        
-        for (int i = 0; i < patternMaps.length; i++) {
+
+        // Outer loop: iterate through each character in the word
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+
+            // Add separator between characters (3 spaces)
             if (i > 0) {
-                line.append("   ");  // Append 3 spaces separator between characters
+                line.append("   ");
             }
-            line.append(patternMaps[i].getPattern()[lineIndex]);
+
+            // Inner access: retrieve pattern and get the specific line segment
+            String[] pattern = patternMap.get(ch);
+            if (pattern != null && lineIndex < pattern.length) {
+                line.append(pattern[lineIndex]);
+            }
         }
-        
+
         return line.toString();
     }
     /**
      * Entry point of the application. Prints "OOPS" to standard output.
      *
-     * UC7: Store Character Pattern in a Class
-     * Creates CharacterPatternMap instances for O, P, and S, then uses them
-     * to generate and display the banner. This approach provides better
-     * organization, reusability, and scalability for managing character patterns.
+     * UC8: Use Map for Character Patterns and Render via Function
+     * Builds a HashMap containing character-to-pattern mappings, then uses it
+     * to retrieve and display patterns for the word "OOPS". This approach leverages
+     * the Collections Framework for more efficient and scalable pattern management.
      *
-     * Key Benefits:
-     * - ENCAPSULATION: Character patterns are encapsulated within CharacterPatternMap
-     * - MODULARITY: Separation of concerns between data and display logic
-     * - REUSABILITY: PatternMap instances can be used for different words
-     * - ABSTRACTION: Clean interface for pattern access
-     * - EXTENSIBILITY: Easy to add new characters without modifying display code
+     * Key Improvements Over UC7:
+     * - EFFICIENCY: HashMap provides O(1) average case lookup vs linear search
+     * - SCALABILITY: Easy to add new characters without modifying display code
+     * - REUSABILITY: Same HashMap can be used for different words
+     * - CLARITY: Word-based approach is more intuitive than array management
+     *
+     * Key Concepts Demonstrated:
+     * - HashMap for efficient key-value storage of character patterns
+     * - Collections Framework usage for separation of concerns
+     * - Nested loops: outer loop for lines, inner for character lookup
+     * - StringBuilder for efficient string concatenation
      *
      * @param args command-line arguments (ignored)
      */
     public static void main(String[] args) {
-        // Create CharacterPatternMap instances for O, O, P, S
-        CharacterPatternMap[] patternMaps = {
-            getOPatternMap(),
-            getOPatternMap(),
-            getPPatternMap(),
-            getSPatternMap()
-        };
+        // UC8: Build the character pattern map using HashMap
+        // Maps each character to its 7-line banner representation
+        Map<Character, String[]> patternMap = buildCharacterPatternMap();
 
-        // Declare and initialize a String array using method calls
-        // that leverage CharacterPatternMap objects
+        // Define the word to display
+        String word = "OOPS";
+
+        // Build the banner lines by iterating through each of 7 lines
+        // For each line, lookup patterns from the HashMap and combine them
         String[] lines = {
-            getBannerLine(0, patternMaps),
-            getBannerLine(1, patternMaps),
-            getBannerLine(2, patternMaps),
-            getBannerLine(3, patternMaps),
-            getBannerLine(4, patternMaps),
-            getBannerLine(5, patternMaps),
-            getBannerLine(6, patternMaps)
+            getBannerLine(0, word, patternMap),
+            getBannerLine(1, word, patternMap),
+            getBannerLine(2, word, patternMap),
+            getBannerLine(3, word, patternMap),
+            getBannerLine(4, word, patternMap),
+            getBannerLine(5, word, patternMap),
+            getBannerLine(6, word, patternMap)
         };
 
         // Print the banner using an enhanced for-loop
